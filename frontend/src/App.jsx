@@ -2,16 +2,33 @@ import { useState, useEffect } from 'react';
 import { BrowserRouter as Router, Routes, Route } from 'react-router-dom';
 import Navbar from './components/Navbar';
 import Home from './components/Home';
+import About from './components/About';
 import Signin from './components/Signin';
 import Signup from './components/Signup';
 import AddBlog from './components/AddBlog';
 import BlogDetail from './components/BlogDetail';
 import MyBlogs from './components/MyBlogs';
+import Footer from './components/Footer';
 
 function App() {
+  const [theme, setTheme] = useState(localStorage.getItem('theme') || 'light');
+
+  useEffect(() => {
+    if (theme === 'dark') {
+      document.documentElement.classList.add('dark');
+    } else {
+      document.documentElement.classList.remove('dark');
+    }
+    localStorage.setItem('theme', theme);
+  }, [theme]);
+
+  const toggleTheme = () => {
+    setTheme(prev => prev === 'light' ? 'dark' : 'light');
+  };
+
   const [user, setUser] = useState(null);
 
-  // TODO: Check for current user session on mount
+  // Check for current user session on mount
   useEffect(() => {
     const checkUser = async () => {
       try {
@@ -43,16 +60,23 @@ function App() {
 
   return (
     <Router>
-      <Navbar user={user} handleLogout={handleLogout} />
+      <div className="flex flex-col min-h-screen bg-sky-50 dark:bg-slate-900 transition-colors duration-300">
+        <Navbar user={user} handleLogout={handleLogout} theme={theme} toggleTheme={toggleTheme} />
 
-      <Routes>
-        <Route path="/" element={<Home user={user} />} />
-        <Route path="/user/signin" element={<Signin setUser={setUser} />} />
-        <Route path="/user/signup" element={<Signup setUser={setUser} />} />
-        <Route path="/blog/add-new" element={<AddBlog user={user} />} />
-        <Route path="/blog/:blogId" element={<BlogDetail user={user} />} />
-        <Route path="/blog/my-blogs/:userId" element={<MyBlogs user={user} />} />
-      </Routes>
+        <main className="flex-grow">
+          <Routes>
+            <Route path="/" element={<Home user={user} />} />
+            <Route path="/about" element={<About />} />
+            <Route path="/user/signin" element={<Signin setUser={setUser} />} />
+            <Route path="/user/signup" element={<Signup setUser={setUser} />} />
+            <Route path="/blog/add-new" element={<AddBlog user={user} />} />
+            <Route path="/blog/:blogId" element={<BlogDetail user={user} />} />
+            <Route path="/blog/my-blogs/:userId" element={<MyBlogs user={user} />} />
+          </Routes>
+        </main>
+
+        <Footer />
+      </div>
     </Router>
   );
 }
