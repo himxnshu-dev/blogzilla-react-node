@@ -1,5 +1,6 @@
 import { useState } from 'react';
 import { useNavigate } from 'react-router-dom';
+import { toast } from 'react-hot-toast';
 
 const AddBlog = ({ user }) => {
     const navigate = useNavigate();
@@ -35,6 +36,7 @@ const AddBlog = ({ user }) => {
             });
 
             if (response.ok) {
+                toast.success('Blog created successfully');
                 // If backend returns redirect 302, fetch follows it automatically if standard,
                 // but if we change it to return JSON:
                 const result = await response.json();
@@ -42,9 +44,11 @@ const AddBlog = ({ user }) => {
                 navigate('/'); // OR home
             } else {
                 setError('Failed to create blog');
+                toast.error('Failed to create blog');
             }
         } catch (err) {
             setError('Something went wrong');
+            toast.error('Something went wrong');
         }
     };
 

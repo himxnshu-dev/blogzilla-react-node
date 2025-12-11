@@ -17,7 +17,7 @@ const checkForUser = async (req, res, next) => {
     if (error.name === "TokenExpiredError") {
       const options = {
         httpOnly: true,
-        secure: true,
+        secure: process.env.NODE_ENV === "production",
       };
 
       try {
@@ -53,7 +53,7 @@ const checkForUser = async (req, res, next) => {
         const newAccessToken = jwt.sign(
           payload,
           process.env.ACCESS_TOKEN_SECRET,
-          {expiresIn: "10m"}
+          { expiresIn: "10m" }
         );
         console.log("New access token:", newAccessToken);
 
@@ -93,7 +93,7 @@ const authenticateUserToken = async (req, res, next) => {
 
       const options = {
         httpOnly: true,
-        secure: true,
+        secure: process.env.NODE_ENV === "production",
       };
       try {
         const refreshToken =
@@ -154,4 +154,4 @@ const authenticateUserToken = async (req, res, next) => {
   }
 };
 
-module.exports = {authenticateUserToken, checkForUser};
+module.exports = { authenticateUserToken, checkForUser };

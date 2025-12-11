@@ -1,5 +1,6 @@
 import { useState } from 'react';
 import { useNavigate } from 'react-router-dom';
+import { toast } from 'react-hot-toast';
 
 const Signup = () => {
     const navigate = useNavigate();
@@ -26,10 +27,13 @@ const Signup = () => {
             });
 
             if (response.ok) {
+                toast.success('Account created successfully');
                 navigate('/user/signin');
             } else {
                 const data = await response.json();
-                setError(data.error || 'Signup failed');
+                const errorMessage = data.error || 'Signup failed';
+                setError(errorMessage);
+                toast.error(errorMessage);
             }
         } catch (err) {
             setError('Something went wrong');

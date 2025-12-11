@@ -1,5 +1,6 @@
 import { useState, useEffect } from 'react';
 import { useParams, Link } from 'react-router-dom';
+import { toast } from 'react-hot-toast';
 
 const MyBlogs = ({ user }) => {
     const { userId } = useParams();
@@ -29,9 +30,13 @@ const MyBlogs = ({ user }) => {
             });
             if (response.ok) {
                 setBlogs(blogs.filter(b => b._id !== blogId));
+                toast.success('Blog deleted successfully');
+            } else {
+                toast.error('Failed to delete blog');
             }
         } catch (error) {
             console.error("Failed to delete blog", error);
+            toast.error('Failed to delete blog');
         }
     };
 

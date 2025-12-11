@@ -1,4 +1,4 @@
-const About = () => {
+const About = ({ user }) => {
     return (
         <div className="max-w-7xl mx-auto px-4 sm:px-6 lg:px-8 py-12">
             <div className="text-center mb-16">
@@ -53,18 +53,37 @@ const About = () => {
             </div>
 
             <div className="bg-sky-50 dark:bg-slate-800 rounded-3xl p-10 md:p-16 text-center">
-                <h2 className="text-3xl font-bold text-gray-900 dark:text-white mb-6 font-heading">
-                    Ready to share your voice?
-                </h2>
-                <p className="text-xl text-gray-600 dark:text-slate-300 mb-8 max-w-2xl mx-auto">
-                    Join thousands of other writers who have found their home on BlogZilla. It's free, easy, and designed for you.
-                </p>
-                <a
-                    href="/user/signup"
-                    className="inline-block px-8 py-4 bg-sky-600 text-white font-bold rounded-full text-lg shadow-lg hover:bg-sky-700 hover:shadow-xl transition-all transform hover:-translate-y-1"
-                >
-                    Get Started Today
-                </a>
+                {user ? (
+                    <>
+                        <h2 className="text-3xl font-bold text-gray-900 dark:text-white mb-6 font-heading">
+                            Continue your journey
+                        </h2>
+                        <p className="text-xl text-gray-600 dark:text-slate-300 mb-8 max-w-2xl mx-auto">
+                            You are part of our growing community. Share your latest story with the world today.
+                        </p>
+                        <a
+                            href="/blog/add-new"
+                            className="inline-block px-8 py-4 bg-sky-600 text-white font-bold rounded-full text-lg shadow-lg hover:bg-sky-700 hover:shadow-xl transition-all transform hover:-translate-y-1"
+                        >
+                            Write a New Blog
+                        </a>
+                    </>
+                ) : (
+                    <>
+                        <h2 className="text-3xl font-bold text-gray-900 dark:text-white mb-6 font-heading">
+                            Ready to share your voice?
+                        </h2>
+                        <p className="text-xl text-gray-600 dark:text-slate-300 mb-8 max-w-2xl mx-auto">
+                            Join thousands of other writers who have found their home on BlogZilla. It's free, easy, and designed for you.
+                        </p>
+                        <a
+                            href="/user/signup"
+                            className="inline-block px-8 py-4 bg-sky-600 text-white font-bold rounded-full text-lg shadow-lg hover:bg-sky-700 hover:shadow-xl transition-all transform hover:-translate-y-1"
+                        >
+                            Get Started Today
+                        </a>
+                    </>
+                )}
             </div>
         </div>
     );

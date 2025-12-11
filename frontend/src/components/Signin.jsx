@@ -1,7 +1,8 @@
 import { useState } from 'react';
 import { useNavigate } from 'react-router-dom';
+import { toast } from 'react-hot-toast';
 
-const Signin = () => {
+const Signin = ({ setUser }) => {
     const navigate = useNavigate();
     const [formData, setFormData] = useState({
         email: '',
@@ -27,16 +28,24 @@ const Signin = () => {
             if (response.ok) {
                 // Assuming the backend sets a cookie or returns a token
                 // If refactored to return user data:
-                // const user = await response.json();
-                // setUser(user);
+                const data = await response.json();
+                console.log("Login success data:", data);
+                setUser(data.user); // Update parent state directly
+                // toast.success('Signed in successfully'); // Move after state update
+                toast.success('Signed in successfully');
                 navigate('/');
-                window.location.reload(); // Temporary force reload to refresh state from cookie
+                // window.location.reload(); // Removed to preserve toast
             } else {
                 const data = await response.json();
-                setError(data.error || 'Login failed');
+                console.error("Login failed data:", data);
+                const errorMessage = data.error || 'Login failed';
+                setError(errorMessage);
+                toast.error(errorMessage);
             }
         } catch (err) {
+            console.error("Login error catch:", err);
             setError('Something went wrong');
+            toast.error('Something went wrong');
         }
     };
 

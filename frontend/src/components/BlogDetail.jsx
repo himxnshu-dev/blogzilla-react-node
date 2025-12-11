@@ -1,5 +1,6 @@
 import { useState, useEffect } from 'react';
 import { useParams } from 'react-router-dom';
+import { toast } from 'react-hot-toast';
 
 const BlogDetail = ({ user }) => {
     const { blogId } = useParams();
@@ -31,11 +32,13 @@ const BlogDetail = ({ user }) => {
                 body: JSON.stringify({ content: comment }),
             });
             if (response.ok) {
+                toast.success('Comment added successfully');
                 setComment('');
                 fetchBlog();
             }
         } catch (error) {
             console.error("Failed to post comment", error);
+            toast.error('Failed to post comment');
         }
     };
 
